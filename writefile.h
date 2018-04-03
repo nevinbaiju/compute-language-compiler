@@ -4,9 +4,8 @@
 #define SIZE 200 
 char s[SIZE];   
 
-int writeLine(char s[])
+int writeLine(char *s)
 {
-   char sentence[1000];
    FILE *fptr;
 
    fptr = fopen("program.txt", "a");
@@ -16,9 +15,8 @@ int writeLine(char s[])
       return 0;
    }
 
-   fprintf(fptr,"%s", sentence);
+   fprintf(fptr,"%s\n", s);
    fclose(fptr);
-   printf("File written successfully\n");
 
    return 1;
 }

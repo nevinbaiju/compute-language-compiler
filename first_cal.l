@@ -7,6 +7,8 @@
 "while"				   {return while_statement;}
 "if"				   {return if_statement;}
 "else"				   {return else_statement;}
+"True"				   {return _true_;}
+"False"				   {return _false_;}
 
 "<"					   {return lt;}
 ">"					   {return gt;}
