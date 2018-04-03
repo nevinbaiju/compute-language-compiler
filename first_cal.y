@@ -85,12 +85,12 @@ condition		: exp lt exp		{;}
 
 
 
-assignment  	: identifier '=' exp	{;}
+assignment  	: identifier '=' exp	{updateSymbolVal($1, $3);}
 				;
 
-exp     		: term                  {$$ = $1;}
-				| exp '+' term          {$$ = $1+$3;}
-				| exp '-' term          {$$ = $1-$3;}
+exp     		: term                  		{$$ = $1;}
+				| exp '+' term          		{$$ = $1+$3;}
+				| exp '-' term          		{$$ = $1-$3;}
 
 term			: ending_term
 				| term '*' ending_term          {$$ = $1*$3;}
@@ -98,9 +98,14 @@ term			: ending_term
 				| term '%' ending_term          {$$ = $1%$3;}
 				;
 
-
-ending_term	    : number                {$$ = $1;}
-				| identifier            {;}
+ending_term	    : number                		{$$ = $1;}
+				| identifier            		{
+													int value = symbolVal($1);
+													if(value == NULL)
+														yyerror("Variable not initialized");
+													else
+														$$ = value;
+												}
 				;
 
 %%                     /* C code */
@@ -133,10 +138,11 @@ void updateSymbolVal(char symbol, int val)
 int main (void)
 {
 	/* init symbol table */
+	/*
 	int i;
 	for(i=0; i<52; i++) {
 		symbols[i] = 0;
-	}
+	}*/
 	yyparse();
 
 
