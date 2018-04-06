@@ -1,6 +1,8 @@
 # compute-language-compiler
 
-#### This is a language developed for compiler design assignment.
+## This is a language developed for compiler design assignment.
+
+
 
 #### Has basic functionalities for number manipulation and boolean operation.
 
@@ -21,7 +23,13 @@ The result of a conditional statement can also be stored inside a variable.
 ##### Printing the result.
 > The results can be print using the 'print' statement followed by an expression or an identifier.
 
-##### Grammar representations
+##### Instructions.
+> Basically there are two scripts included remove.sh and complie.sh.
+They contain the necessary codes for cleaning up and compiling the codes respectively.
+The output or the intermediate code representation is generated to the file program.txt
+and the result can be seen in the command line itself.
+
+##### Grammar
 
 ```
 START			------>	LINE
