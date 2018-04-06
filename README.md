@@ -30,7 +30,7 @@ The output or the intermediate code representation is generated to the file prog
 and the result can be seen in the command line itself.
 
 ```
-./ remove
+./remove
 ./compile
 ./calc<input.in
 ```
