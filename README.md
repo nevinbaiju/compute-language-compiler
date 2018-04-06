@@ -21,7 +21,7 @@ It also supports assigning direct boolean values in the form of keywords 'True' 
 
 ##### Three address code generation.
 > The three address code generation is maintained by using the following structure,
-'''
+```
 struct threeADD
 {
 	char result[10];
@@ -30,5 +30,5 @@ struct threeADD
 	char operator[10];
 }quadrple[50];
 int index;
-'''
+```
 This is updated with every valid line encountered and the represented as the result with a prefix _k and numbered from 0.
