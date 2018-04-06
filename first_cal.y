@@ -91,24 +91,6 @@ line	        : assignment ';'      	{;}
 											strcpy(quadraple[ind].operand_1, $3.codeVariable);
 											ind++;
 										}
-				//| while_command			{;}
-				//| line while_command	{;}
-				//| if_construct			{;}
-				//| line if_construct		{;}
-				;
-/*
-
-while_command	: while_statement '(' condition ')'
-					'{' line '}'					{;}
-				;
-
-if_construct	: if_statement '(' condition ')'
-					'{' line '}'					{printf("Label L0:");}
-				| if_statement '(' condition ')'
-					'{' line '}'
-					else_statement '{' line '}'		{;}
-				;
-*/
 condition		: exp lt exp				{
 												$$.val = ($1.val<$3.val);
 												sprintf($$.codeVariable, "_k%d", ind);

@@ -75,4 +75,6 @@ struct threeADD
 int index;
 ```
 This is updated with every valid line encountered and it is represented as the result with a prefix _k and numbered from 0.
-
+##### References
+>	[Video Tutorial](https://www.youtube.com/watch?v=__-wUHG2rfM)
+	[Github](https://github.com/jengelsma/yacc-tutorial)
