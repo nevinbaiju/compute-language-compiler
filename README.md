@@ -29,6 +29,12 @@ They contain the necessary codes for cleaning up and compiling the codes respect
 The output or the intermediate code representation is generated to the file program.txt
 and the result can be seen in the command line itself.
 
+```
+./ remove
+./compile
+./calc<input.in
+```
+
 ##### Grammar
 
 ```
@@ -68,5 +74,5 @@ struct threeADD
 } quadraple[50];
 int index;
 ```
-This is updated with every valid line encountered and the represented as the result with a prefix _k and numbered from 0.
+This is updated with every valid line encountered and it is represented as the result with a prefix _k and numbered from 0.
 
