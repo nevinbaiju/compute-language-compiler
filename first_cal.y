@@ -166,18 +166,35 @@ condition		: exp lt exp				{
 												sprintf($$.codeVariable, "_k%d", ind);
 												strcpy(quadraple[ind].result, $$.codeVariable);
 												strcpy(quadraple[ind].operand_1, "1");
+												ind++;
 											}
 				| _false_					{
 												$$.val = 0;
 												sprintf($$.codeVariable, "_k%d", ind);
 												strcpy(quadraple[ind].result, $$.codeVariable);
 												strcpy(quadraple[ind].operand_1, "0");
+												ind++;
 											}
-				| identifier				{$$.val = (symbolVal($1)==1);}
 				;
 
 
 assignment  	: identifier '=' exp			{
+													updateSymbolVal($1, $3.val);
+													sprintf(temp, "%d", $3.val);
+													sprintf(temp, "_k%d", ind);
+													strcpy(quadraple[ind].result, temp);
+													sprintf(temp, "%c", $1);
+													strcpy(quadraple[ind].operand_1, temp);
+													sprintf(temp, "%c", '=');
+													strcpy(quadraple[ind].operator, temp);
+													sprintf(temp, "%s", $3.codeVariable);
+													strcpy(quadraple[ind].operand_2, temp);
+
+													$$ = $3.val;
+													ind++;
+
+												}
+				|  identifier '=' condition		{
 													updateSymbolVal($1, $3.val);
 													sprintf(temp, "%d", $3.val);
 													sprintf(temp, "_k%d", ind);
@@ -221,7 +238,7 @@ exp     		: term                  		{
 												}
 
 term			: ending_term					{
-													$$ = $1;
+													$$.val = $1.val;
 												}
 				| term '*' ending_term          {
 													sprintf($$.codeVariable, "_k%d", ind);
