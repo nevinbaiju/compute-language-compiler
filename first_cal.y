@@ -57,7 +57,7 @@ void generateCode();
 %token else_statement
 
 %type <num> line 
-%type <code> exp term ending_term //condition
+%type <code> exp term ending_term condition
 %type <id> assignment
 
 %left '+' '-'
@@ -68,9 +68,31 @@ void generateCode();
 line	        : assignment ';'      	{;}
 				| line assignment ';'	{;}     
 				| exit_command ';'      {printf("no errors encountered\n");}
-				| print exp ';'         {printf("%d\n", $2.val);}
 				| line exit_command ';' {printf("no errors encountered\n");}
-				| line print exp ';'	{printf("%d\n", $3.val);}
+				| print exp ';'         {
+											printf("%d\n", $2.val);
+											strcpy(quadraple[ind].operator, "Cprint");
+											strcpy(quadraple[ind].operand_1, $2.codeVariable);
+											ind++;
+										}
+				| line print exp ';'	{
+											printf("%d\n", $3.val);
+											strcpy(quadraple[ind].operator, "Cprint");
+											strcpy(quadraple[ind].operand_1, $3.codeVariable);
+											ind++;
+										}
+				| print condition ';'         {
+											printf("%d\n", $2.val);
+											strcpy(quadraple[ind].operator, "Cprint");
+											strcpy(quadraple[ind].operand_1, $2.codeVariable);
+											ind++;
+										}
+				| line print condition ';'	{
+											printf("%d\n", $3.val);
+											strcpy(quadraple[ind].operator, "Cprint");
+											strcpy(quadraple[ind].operand_1, $3.codeVariable);
+											ind++;
+										}
 				//| while_command			{;}
 				//| line while_command	{;}
 				//| if_construct			{;}
@@ -88,16 +110,71 @@ if_construct	: if_statement '(' condition ')'
 					'{' line '}'
 					else_statement '{' line '}'		{;}
 				;
-condition		: exp lt exp				{$$ = ($1<$3)? "1":"0";}
-				| exp gt exp				{$$ = ($1>$3)? "1":"0";}
-				| exp eq exp				{$$ = ($1==$3)? "1":"0";}
-				| exp lteq exp				{$$ = ($1<=$3)? "1":"0";}
-				| exp gteq exp				{$$ = ($1>=$3)? "1":"0";}
-				| _true_					{$$ = 1;}
-				| _false_					{$$ = 0;}
-				| identifier				{$$ = (symbolVal($1)==1)? "1":"0";}
-				;
 */
+condition		: exp lt exp				{
+												$$.val = ($1.val<$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%c", '<');
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| exp gt exp				{
+												$$.val = ($1.val>$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%c", '>');
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| exp eq exp				{
+												$$.val = ($1.val==$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%s", "==");
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| exp lteq exp				{
+												$$.val = ($1.val<=$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%s", "<=");
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| exp gteq exp				{
+												$$.val = ($1.val>=$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%s", ">=");
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| _true_					{
+												$$.val = 1;
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, "1");
+											}
+				| _false_					{
+												$$.val = 0;
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, "0");
+											}
+				| identifier				{$$.val = (symbolVal($1)==1);}
+				;
 
 
 assignment  	: identifier '=' exp			{
@@ -119,11 +196,8 @@ assignment  	: identifier '=' exp			{
 				;
 
 exp     		: term                  		{
-													sprintf($$.codeVariable, "_k%d", ind);
-													strcpy(quadraple[ind].result, $$.codeVariable);
-													strcpy(quadraple[ind].operand_1, $1.codeVariable);
+													sprintf($$.codeVariable, "%s", $1.codeVariable);
 													$$.val = $1.val;
-													ind++;
 												}
 				| exp '+' term          		{
 													sprintf($$.codeVariable, "_k%d", ind);
@@ -146,7 +220,9 @@ exp     		: term                  		{
 													ind++;
 												}
 
-term			: ending_term
+term			: ending_term					{
+													$$ = $1;
+												}
 				| term '*' ending_term          {
 													sprintf($$.codeVariable, "_k%d", ind);
 													strcpy(quadraple[ind].result, $$.codeVariable);
@@ -240,6 +316,14 @@ void generateCode()
 
 	while(count < ind)
 	{
+		
+		if (strcmp(quadraple[count].result, "")==0)
+		{
+			sprintf(buffer, "%s %s", quadraple[count].operator, quadraple[count].operand_1);
+			writeLine(buffer);
+			count++;
+			continue;
+		}
 		sprintf(buffer, "%s := %s %s %s", quadraple[count].result, quadraple[count].operand_1,
 			quadraple[count].operator, quadraple[count].operand_2);
 		writeLine(buffer);
