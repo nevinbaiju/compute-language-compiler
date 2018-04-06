@@ -24,27 +24,27 @@ The result of a conditional statement can also be stored inside a variable.
 ##### Grammar representations
 
 ```
-START				------>					LINE
+START			------>	LINE
 
-LINE				------>					ASSIGNMENT 		| LINE ASSIGNMENT
-										|	print EXP  		| LINE print EXP
-										|	print CONDITION | LINE print CONDITION
+LINE			------>	ASSIGNMENT 		| LINE ASSIGNMENT
+					|	print EXP  		| LINE print EXP
+					|	print CONDITION | LINE print CONDITION
 
-condition 			------>					EXP lt EXP 		| EXP gt EXP
-										|	EXP eq EXP 		| EXP lteq EXP
-										| 	EXP gteq EXP 	| true
-										| 	false
+condition 		------>	EXP lt EXP 		| EXP gt EXP
+					|	EXP eq EXP 		| EXP lteq EXP
+					| 	EXP gteq EXP 	| true
+					| 	false
 
-assignment 			------>					id = EXP 		| id = CONDITION
+assignment 		------>	id = EXP 		| id = CONDITION
 
-EXP 				------>					TERM 			| EXP + TERM          		
-										| 	EXP - TERM
+EXP 			------>	TERM 			| EXP + TERM          		
+					| 	EXP - TERM
 
-TERM				------>				 	ENDING_TERM 	| TERM * ENDING_TERM
-										| 	TERM / ENDING TERM
-										|	term % ENDING TERM
+TERM			------>	ENDING_TERM 	| TERM * ENDING_TERM
+					| 	TERM / ENDING TERM
+					|	term % ENDING TERM
 
-ENDING_TERM			------>					number 			| identifier
+ENDING_TERM		------>	number 			| identifier
 
 ```
 
