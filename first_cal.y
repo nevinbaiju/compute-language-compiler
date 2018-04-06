@@ -40,7 +40,6 @@ void generateCode();
 %start line
 
 %token print
-%token exit_command
 %token <num> number
 %token <id> identifier
 %token <num> _true_
@@ -51,6 +50,7 @@ void generateCode();
 %token eq
 %token lteq
 %token gteq
+%token nteq
 
 %token while_statement
 %token if_statement
@@ -66,9 +66,7 @@ void generateCode();
 %%
 
 line	        : assignment ';'      	{;}
-				| line assignment ';'	{;}     
-				| exit_command ';'      {printf("no errors encountered\n");}
-				| line exit_command ';' {printf("no errors encountered\n");}
+				| line assignment ';'	{;}
 				| print exp ';'         {
 											printf("%d\n", $2.val);
 											strcpy(quadraple[ind].operator, "Cprint");
@@ -158,6 +156,16 @@ condition		: exp lt exp				{
 												strcpy(quadraple[ind].operand_1, $1.codeVariable);
 												strcpy(quadraple[ind].operand_2, $3.codeVariable);
 												sprintf(temp, "%s", ">=");
+												strcpy(quadraple[ind].operator, temp);
+												ind++;
+											}
+				| exp nteq exp				{
+												$$.val = ($1.val!=$3.val);
+												sprintf($$.codeVariable, "_k%d", ind);
+												strcpy(quadraple[ind].result, $$.codeVariable);
+												strcpy(quadraple[ind].operand_1, $1.codeVariable);
+												strcpy(quadraple[ind].operand_2, $3.codeVariable);
+												sprintf(temp, "%s", "!=");
 												strcpy(quadraple[ind].operator, temp);
 												ind++;
 											}

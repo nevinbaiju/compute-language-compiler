@@ -7,17 +7,46 @@
 ##### Main arithmetic operations.
 > The main arithmetic operations available are +, -, *, /, %. 
 
-##### Variables.
-> The variables can be assigned from [a-z] and [A-Z]. The symbol table implementation involves
-a simple symbol table of 52 rows. And a simple hashing algorithm to fill in according to the 
-ascending value of the variables is used. There is only one data type, i.e integer.
 
 ##### Conditional statements.
 > This programming language supports various conditional operations like <, >, ==. <=, >=.
 It also supports assigning direct boolean values in the form of keywords 'True' and 'False'.
 
+##### Variables.
+> The variables can be assigned from [a-z] and [A-Z]. The symbol table implementation involves
+a simple symbol table of 52 rows. And a simple hashing algorithm to fill in according to the 
+ascending value of the variables is used. There is only one data type, i.e integer.
+The result of a conditional statement can also be stored inside a variable.
+
 ##### Printing the result.
 > The results can be print using the 'print' statement followed by an expression or an identifier.
+
+##### Grammar representations
+
+```
+START				------>					LINE
+
+LINE				------>					ASSIGNMENT 		| LINE ASSIGNMENT
+										|	print EXP  		| LINE print EXP
+										|	print CONDITION | LINE print CONDITION
+
+condition 			------>					EXP lt EXP 		| EXP gt EXP
+										|	EXP eq EXP 		| EXP lteq EXP
+										| 	EXP gteq EXP 	| true
+										| 	false
+
+assignment 			------>					id = EXP 		| id = CONDITION
+
+EXP 				------>					TERM 			| EXP + TERM          		
+										| 	EXP - TERM
+
+TERM				------>				 	ENDING_TERM 	| TERM * ENDING_TERM
+										| 	TERM / ENDING TERM
+										|	term % ENDING TERM
+
+ENDING_TERM			------>					number 			| identifier
+
+```
 
 ##### Three address code generation.
 > The three address code generation is maintained by using the following structure,
@@ -28,7 +57,8 @@ struct threeADD
 	char operand_1[10];
 	char operand_2[10];
 	char operator[10];
-}quadrple[50];
+} quadraple[50];
 int index;
 ```
 This is updated with every valid line encountered and the represented as the result with a prefix _k and numbered from 0.
+
