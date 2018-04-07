@@ -171,14 +171,10 @@ condition		: exp lt exp				{
 assignment  	: identifier '=' exp			{
 													updateSymbolVal($1, $3.val);
 													sprintf(temp, "%d", $3.val);
-													sprintf(temp, "_k%d", ind);
-													strcpy(quadraple[ind].result, temp);
 													sprintf(temp, "%c", $1);
-													strcpy(quadraple[ind].operand_1, temp);
-													sprintf(temp, "%c", '=');
-													strcpy(quadraple[ind].operator, temp);
+													strcpy(quadraple[ind].result, temp);
 													sprintf(temp, "%s", $3.codeVariable);
-													strcpy(quadraple[ind].operand_2, temp);
+													strcpy(quadraple[ind].operand_1, temp);
 
 													$$ = $3.val;
 													ind++;
@@ -186,15 +182,10 @@ assignment  	: identifier '=' exp			{
 												}
 				|  identifier '=' condition		{
 													updateSymbolVal($1, $3.val);
-													sprintf(temp, "%d", $3.val);
-													sprintf(temp, "_k%d", ind);
-													strcpy(quadraple[ind].result, temp);
 													sprintf(temp, "%c", $1);
-													strcpy(quadraple[ind].operand_1, temp);
-													sprintf(temp, "%c", '=');
-													strcpy(quadraple[ind].operator, temp);
+													strcpy(quadraple[ind].result, temp);
 													sprintf(temp, "%s", $3.codeVariable);
-													strcpy(quadraple[ind].operand_2, temp);
+													strcpy(quadraple[ind].operand_1, temp);
 
 													$$ = $3.val;
 													ind++;
@@ -263,12 +254,12 @@ term			: ending_term					{
 				;
 
 ending_term	    : number                		{
-													sprintf(temp, "%d", $1);
-													sprintf($$.codeVariable, "_k%d", ind);
-													strcpy(quadraple[ind].result, $$.codeVariable);
-													strcpy(quadraple[ind].operand_1, temp);
+													//sprintf(temp, "%d", $1);
+													sprintf($$.codeVariable, "%d", $1);
+													//strcpy(quadraple[ind].result, $$.codeVariable);
+													//strcpy(quadraple[ind].operand_1, temp);
 													$$.val = $1;
-													ind++;
+													//ind++;
 
 												}
 				| identifier            		{
@@ -278,13 +269,9 @@ ending_term	    : number                		{
 													else
 														{
 															sprintf(temp, "%d", value);
-															sprintf($$.codeVariable, "_k%d", ind);
-															strcpy(quadraple[ind].result, $$.codeVariable);
-															sprintf(temp, "%c", $1);
-															strcpy(quadraple[ind].operand_1, temp);
+															sprintf($$.codeVariable, "%c", $1);
 
 															$$.val = value;
-															ind++;
 														}
 												}
 				;
@@ -340,17 +327,8 @@ void generateCode()
 
 int main (void)
 {
-	/* init symbol table */
-	/*
-	int i;
-	for(i=0; i<52; i++) {
-		symbols[i] = 0;
-	}*/
 	yyparse();
 	generateCode();
-
-
-	//tripleCode();
 }
 
 void yyerror (char *s) {fprintf (stderr, "%s at line %d\n", s, line);}
