@@ -51,10 +51,10 @@ void generateCode();
 %token lteq
 %token gteq
 %token nteq
-
+/*
 %token while_statement
 %token if_statement
-%token else_statement
+%token else_statement*/
 
 %type <num> line 
 %type <code> exp term ending_term condition
@@ -65,31 +65,34 @@ void generateCode();
 
 %%
 
-line	        : assignment ';'      	{;}
-				| line assignment ';'	{;}
+line	        : assignment ';'      	{line++;}
+				| line assignment ';'	{line++;}
 				| print exp ';'         {
 											printf("%d\n", $2.val);
 											strcpy(quadraple[ind].operator, "Cprint");
 											strcpy(quadraple[ind].operand_1, $2.codeVariable);
 											ind++;
+											line++;
 										}
 				| line print exp ';'	{
 											printf("%d\n", $3.val);
 											strcpy(quadraple[ind].operator, "Cprint");
 											strcpy(quadraple[ind].operand_1, $3.codeVariable);
-											ind++;
+											ind++;line++;
 										}
 				| print condition ';'         {
 											printf("%d\n", $2.val);
 											strcpy(quadraple[ind].operator, "Cprint");
 											strcpy(quadraple[ind].operand_1, $2.codeVariable);
 											ind++;
+											line++;
 										}
 				| line print condition ';'	{
 											printf("%d\n", $3.val);
 											strcpy(quadraple[ind].operator, "Cprint");
 											strcpy(quadraple[ind].operand_1, $3.codeVariable);
 											ind++;
+											line++;
 										}
 condition		: exp lt exp				{
 												$$.val = ($1.val<$3.val);

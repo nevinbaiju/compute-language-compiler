@@ -4,7 +4,7 @@
 
 
 
-#### Has basic functionalities for number manipulation and boolean operation.
+#### Has basic functionalities for number manipulation and boolean comparisons.
 
 ##### Main arithmetic operations.
 > The main arithmetic operations available are +, -, *, /, %. 
@@ -30,33 +30,35 @@ The output or the intermediate code representation is generated to the file prog
 and the result can be seen in the command line itself.
 
 ```
-./remove
-./compile
+./remove.sh
+./compile.sh
 ./calc<input.in
 ```
+> Inorder to run compile a program seperately, follow the instructions inside compile.sh. The result (Three address code) can be viewed inside the program.txt file. Compiling a program will only evaluate your program.
+
 
 ##### Grammar
 
 ```
 START			------>	LINE
 
-LINE			------>	ASSIGNMENT 		| LINE ASSIGNMENT
-					|	print EXP  		| LINE print EXP
-					|	print CONDITION | LINE print CONDITION
+LINE			 ------>	ASSIGNMENT 	| LINE ASSIGNMENT
+                        |	print EXP  	| LINE print EXP
+                        |	print CONDITION | LINE print CONDITION
 
-condition 		------>	EXP lt EXP 		| EXP gt EXP
-					|	EXP eq EXP 		| EXP lteq EXP
-					| 	EXP gteq EXP 	| true
-					| 	false
+condition 	   ------>	EXP lt EXP 		| EXP gt EXP
+                        |	EXP eq EXP 		| EXP lteq EXP
+                        | 	EXP gteq EXP 	| EXP nteq EXP
+                        | true              | false
 
-assignment 		------>	id = EXP 		| id = CONDITION
+ASSIGNMENT 	   ------>	id = EXP 		| id = CONDITION
 
 EXP 			------>	TERM 			| EXP + TERM          		
 					| 	EXP - TERM
 
 TERM			------>	ENDING_TERM 	| TERM * ENDING_TERM
 					| 	TERM / ENDING TERM
-					|	term % ENDING TERM
+					|	TERM % ENDING TERM
 
 ENDING_TERM		------>	number 			| identifier
 
@@ -75,6 +77,37 @@ struct threeADD
 int index;
 ```
 This is updated with every valid line encountered and it is represented as the result with a prefix _k and numbered from 0.
+
+##### Sample program
+```
+a=10+5/5+5+2*1 != 8;
+b = 5%2;
+c = a==b;
+print c;
+print 500;
+```
+##### Output (Evaluation)
+```
+1
+500
+```
+##### Output (Three address code)
+```
+_k0 := 5 / 5
+_k1 := 10 + _k0
+_k2 := _k1 + 5
+_k3 := 2 * 1
+_k4 := _k2 + _k3
+_k5 := _k4 != 8
+a := _k5  
+_k7 := 5 % 2
+b := _k7  
+_k9 := a == b
+c := _k9
+Cprint c
+Cprint 500
+
+```
 ##### References
 >	[Video Tutorial](https://www.youtube.com/watch?v=__-wUHG2rfM)
 	[Github](https://github.com/jengelsma/yacc-tutorial)
