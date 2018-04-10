@@ -60,7 +60,7 @@ TERM			------>	ENDING_TERM 	| TERM * ENDING_TERM
 					| 	TERM / ENDING TERM
 					|	TERM % ENDING TERM
 
-ENDING_TERM		------>	number 			| identifier
+ENDING_TERM		------>	number 			| id
 
 ```
 
